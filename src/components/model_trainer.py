@@ -40,13 +40,20 @@ class ModelTrainer:
                 'Random Forest': RandomForestRegressor(),
                 'Decision Tree': DecisionTreeRegressor(),
                 'Gradient Boosting': GradientBoostingRegressor(),
-                'K-Neighbors Classifier': KNeighborsRegressor(),
-                'CatBoosting Classifier': CatBoostRegressor(verbose=False),
+                'K-Neighbors Regressor': KNeighborsRegressor(),
+                'CatBoost Regressor': CatBoostRegressor(verbose=False),
 
             }
+            params = {
+            'Random Forest': {'n_estimators': [50, 100], 'max_depth': [5, 10]},
+            'Decision Tree': {'max_depth': [5, 10, None]},
+            'Gradient Boosting': {'learning_rate': [0.01, 0.1], 'n_estimators': [50, 100]},
+            'K-Neighbors Regressor': {'n_neighbors': [3, 5, 7]},
+            'CatBoost Regressor': {'iterations': [50, 100], 'depth': [4, 6],'learning_rate': [0.01, 0.05,0.1]},
+        }
 
             model_report:dict=evaluate_model(x_train=x_train,y_train=y_train,x_test=x_test,y_test=y_test,
-                                             models=models)
+                                             models=models,param=params)
             
             ## To get best model score from dict
             best_model_score=max(sorted(model_report.values()))
